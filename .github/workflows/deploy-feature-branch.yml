@@ -38,4 +38,4 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
           SOURCE_DIR: _site
-          DEST_DIR: data-${{ env.GITHUB_REF_SLUG }}
+          DEST_DIR: ${{ env.GITHUB_REF_SLUG }}-data
