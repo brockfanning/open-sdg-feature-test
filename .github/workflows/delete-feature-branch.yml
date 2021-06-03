@@ -5,7 +5,7 @@ on: delete
 jobs:
   cleanup:
     runs-on: ubuntu-latest
-    if: github.event.ref_type == 'branch' && startsWith(github.event.ref_type, 'feature-') == true
+    if: github.event.ref_type == 'branch' && startsWith(github.event.ref_type, 'heads/feature-') == true
     steps:
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v3.x
