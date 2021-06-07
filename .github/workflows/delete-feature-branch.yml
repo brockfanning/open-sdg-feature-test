@@ -18,3 +18,14 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
           PATH_TO_DELETE: ${{ env.GITHUB_EVENT_REF_SLUG }}-data
+      - name: Delete site branch
+        env:
+          ACCESS_TOKEN: ${{ secrets.token }}
+          SITE_BRANCH: ${{ env.GITHUB_EVENT_REF_SLUG }}
+        run: |
+          git clone https://brockfanning:$ACCESS_TOKEN@github.com/brockfanning/open-sdg-feature-test-site
+
+          cd open-sdg-feature-test-site
+          git config user.name "Brock Fanning"
+          git config user.email "brockfanning@gmail.com"
+          git push origin --delete $SITE_BRANCH
