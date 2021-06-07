@@ -37,14 +37,17 @@ jobs:
           DEST_DIR: ${{ env.GITHUB_REF_SLUG }}-data
       - name: Trigger a site build
         env:
+          GITHUB_USERNAME: brockfanning
+          GITHUB_ORG: brockfanning
+          GITHUB_SITE_REPO: open-sdg-feature-test-site
           ACCESS_TOKEN: ${{ secrets.token }}
           SITE_BRANCH: ${{ env.GITHUB_REF_SLUG }}
         run: |
-          git clone https://brockfanning:$ACCESS_TOKEN@github.com/brockfanning/open-sdg-feature-test-site
+          git clone https://$GITHUB_USERNAME:$ACCESS_TOKEN@github.com/$GITHUB_ORG/$GITHUB_SITE_REPO
 
-          cd open-sdg-feature-test-site
-          git config user.name "Brock Fanning"
-          git config user.email "brockfanning@gmail.com"
+          cd $GITHUB_SITE_REPO
+          git config user.name "Feature branch server"
+          git config user.email "noreply@example.com"
 
           git checkout $SITE_BRANCH 2>/dev/null || git checkout -b $SITE_BRANCH
           git commit --allow-empty -m "Trigger build"
