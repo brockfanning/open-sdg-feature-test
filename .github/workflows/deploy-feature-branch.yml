@@ -25,7 +25,8 @@ jobs:
           python scripts/build_data.py
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v3.x
-      - uses: jakejarvis/s3-sync-action@master
+      - name: Push data build to S3
+        uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
         env:
@@ -34,3 +35,17 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
           SOURCE_DIR: _site
           DEST_DIR: ${{ env.GITHUB_REF_SLUG }}-data
+      - name: Trigger a site build
+        env:
+          GITHUB_TOKEN: ${{ secrets.token }}
+          SITE_BRANCH: ${{ env.GITHUB_REF_SLUG }}
+        run: |
+          git clone https://brockfanning:$GITHUB_TOKEN@github.com/brockfanning/open-sdg-feature-test-site
+
+          cd open-sdg-feature-test-site
+          git config user.name "Brock Fanning"
+          git config user.email "brockfanning@gmail.com"
+
+          git checkout $SITE_BRANCH 2>/dev/null || git checkout -b $SITE_BRANCH
+          git commit --allow-empty -m "Trigger build"
+          git push origin $SITE_BRANCH
