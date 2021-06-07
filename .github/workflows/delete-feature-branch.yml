@@ -15,14 +15,22 @@ jobs:
           args: --recursive
         env:
           AWS_S3_BUCKET: open-sdg-feature
+          # Remember to add AWS_ACCESS as a "repository secret".
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS }}
+          # Remember to add AWS_SECRET as a "repository secret".
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
           PATH_TO_DELETE: ${{ env.GITHUB_EVENT_REF_SLUG }}-data
       - name: Delete site branch
         env:
+          # Enter your Github username (or the username of whomever owns
+          # the personal access token being used).
           GITHUB_USERNAME: brockfanning
+          # Enter your Github organization (maybe the same as your username).
           GITHUB_ORG: brockfanning
+          # Enter the site repository name
           GITHUB_SITE_REPO: open-sdg-feature-test-site
+          # Remember to create a personal access token and set it as a
+          # repository secret called "token".
           ACCESS_TOKEN: ${{ secrets.token }}
           SITE_BRANCH: ${{ env.GITHUB_EVENT_REF_SLUG }}
         run: |

@@ -30,16 +30,25 @@ jobs:
         with:
           args: --acl public-read --follow-symlinks --delete
         env:
+          # Update this according to the name of your S3 bucket.
           AWS_S3_BUCKET: open-sdg-feature
+          # Remember to add AWS_ACCESS as a "repository secret".
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS }}
+          # Remember to add AWS_SECRET as a "repository secret".
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
           SOURCE_DIR: _site
           DEST_DIR: ${{ env.GITHUB_REF_SLUG }}-data
       - name: Trigger a site build
         env:
+          # Enter your Github username (or the username of whomever owns
+          # the personal access token being used).
           GITHUB_USERNAME: brockfanning
+          # Enter your Github organization (maybe the same as your username).
           GITHUB_ORG: brockfanning
+          # Enter the site repository name
           GITHUB_SITE_REPO: open-sdg-feature-test-site
+          # Remember to create a personal access token and set it as a
+          # repository secret called "token".
           ACCESS_TOKEN: ${{ secrets.token }}
           SITE_BRANCH: ${{ env.GITHUB_REF_SLUG }}
         run: |
